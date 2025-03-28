@@ -1,6 +1,7 @@
 # importing all the functions 
 # from http.server module 
 from http.server import *
+from server_utils import get_homepage_content  # Import the function from the second file
 
 # creating a class for handling 
 # basic Get and Post Requests 
@@ -17,12 +18,12 @@ class PyDevServer(BaseHTTPRequestHandler):
 		self.send_header('content-type', 'text/html') 
 		self.end_headers() 
 		
-		# what we write in this function it gets visible on our 
-		# web-server 
-		self.wfile.write('<h1>Hello world!!!!!!!!!</h1>'.encode()) 
+		# Get the homepage content from the utility function
+		content = get_homepage_content()
+		self.wfile.write(content.encode('utf-8'))  # Encode the string to bytes before writing
+			
 
-
-# this is the object which take port 
+# this is the object which takes port 
 # number and the server-name 
 # for running the server 
 port = HTTPServer(('', 80), PyDevServer) 
