@@ -1,34 +1,10 @@
-# importing all the functions 
-# from http.server module 
-from http.server import *
-from server_utils import get_homepage_content  # Import the function from the second file
+from flask import Flask, render_template
 
-# creating a class for handling 
-# basic Get and Post Requests 
-class PyDevServer(BaseHTTPRequestHandler): 
-	
-	# creating a function for Get Request 
-	def do_GET(self): 
-		
-		# Success Response --> 200 
-		self.send_response(200) 
-		
-		# Type of file that we are using for creating our 
-		# web server. 
-		self.send_header('content-type', 'text/html') 
-		self.end_headers() 
-		
-		# Get the homepage content from the utility function
-		content = get_homepage_content()
-		self.wfile.write(content.encode('utf-8'))  # Encode the string to bytes before writing
-			
+app = Flask(__name__)
 
-# this is the object which takes port 
-# number and the server-name 
-# for running the server 
-port = HTTPServer(('', 80), PyDevServer) 
+@app.route('/')
+def home():
+    return render_template('index.html')  # This will look for index.html in the templates folder
 
-# this is used for running our 
-# server as long as we wish 
-# i.e. forever 
-port.serve_forever() 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)  # Run the app on port 80
